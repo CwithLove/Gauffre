@@ -52,6 +52,14 @@ public class Niveau {
         return this.tab[lig][col];
     }
 
+    public int getLignes() {
+        return this.tab.length;
+    }
+
+    public int getColonnes() {
+        return this.tab[0].length;
+    }
+
     // Setter
     public void set(int lig, int col, int val) {
         this.tab[lig][col] = val;
@@ -64,7 +72,13 @@ public class Niveau {
 
     // Affichage du niveau
     public void afficher() {
+        System.out.print("  ");
+        for (int i = 0; i < tab[0].length; i++) {
+            System.out.print(i);
+        }
+        System.out.println();
         for (int i = 0; i < tab.length; i++) {
+            System.out.print(i + " ");
             for (int j = 0; j < tab[i].length; j++) {
                 switch (tab[i][j]) {
                     case VIDE:
