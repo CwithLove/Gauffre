@@ -74,12 +74,12 @@ public class Niveau {
 
     // Affichage du niveau
     public void afficher() {
-        System.out.print("  ");
+        System.out.print("   ");
         for (int i = 0; i < tab[0].length; i++) {
             if (i < 10) {
-                System.out.print(" " + i);
+                System.out.print("  " + i);
             } else {
-                System.out.print(i);
+                System.out.print(" " + i);
             }
         }
 
@@ -87,12 +87,12 @@ public class Niveau {
         for (int i = 0; i < tab.length; i++) {
             // Affichage des lignes
             if (i < 10) {
-                System.out.print(" " + i);
+                System.out.print("  " + i);
             } else {
-                System.out.print(i);
+                System.out.print(" " + i);
             }
             for (int j = 0; j < tab[i].length; j++) {
-                System.out.print(" ");
+                System.out.print("  ");
                 // Affichage des cases
                 switch (tab[i][j]) {
                     case VIDE:
