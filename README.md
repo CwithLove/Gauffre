@@ -1,45 +1,56 @@
-# Gauffre
+# Gauffre — Terminal-Based Strategy Game
 
-## MODELE
-### NIVEAU -> Carte (Anthony, Mathis)
-- Attributs: int[][] Tab; final int VIDE, GAUFFRE, EMPOIS.
+## 🎯 Project Overview
+**Gauffre** is a two-player turn-based terminal game developed in Java, simulating a strategic battle over a poisoned waffle. The last player forced to eat the poisoned piece loses. This implementation is modular and ready for future integration with graphical interfaces and user input extensions.
 
-- Methode Constructor(lig, col)
-- Methode redimensionne(lig, col) => Appel Contructor(lig, col) 
-- Methode getter(lig, col)
-- Methode setter(lig, col, val) 
-- Methode final() -> return tab[0][0] == VIDE
-- Methode d'affichage() -> ( ' ' pour Vide, '#' pour Gauffre, '@' pour Empoisonne)
+---
 
-=> Ecris une nouvelle class TestNiveau pour tester
+## 🧩 Architecture Overview
 
-### Jeu -> Lancer la partie (Yuzhen, Yilun)
-- Attributs: Niveau, int tour
+### 1. **Model Layer**
+#### `Niveau` — Game Grid (by Anthony & Mathis)
+Encapsulates the game state as a 2D grid with semantic constants:
+- `VIDE` = 0 → Empty cell  
+- `GAUFFRE` = 1 → Normal waffle piece  
+- `EMPOIS` = 2 → Poisoned cell (always at [0][0])
 
-- Methode Manger(Point posMange) -> void
-- Methode Final(Niveau) -> bool
-- Methode Lancer() -> Lancement la partie (boucle infini)
-=> Tant que !final():
-    => tour += 1
-    => Lire sur le terminal pour Manger(lig, col)
-La personne ((tour%2) + 1) gagne
+**Key Responsibilities:**
+- Grid initialization and resizing
+- Cell state management
+- Termination condition detection (`finalNiveau()`)
+- ASCII rendering of the current grid state
 
-=> MAIN
+> Sample Output:
+> - `#` → Gauffre  
+> - `@` → Poisoned  
+> - ` ` → Empty  
 
-## CONTROLLER (apres)
-- Ecouteur de souris (MouseListener)
-- Ecouteur de clavier => pour redimensionner la carte (apres)
+#### `TestNiveau` — Unit Tester for `Niveau`
+Standalone test suite to validate construction, resizing, and mutation operations on the grid.
 
-## VUE (apres)
-### INTERFACE GRAPHIQUE
-- Initialiser l'interface (jeu et button)
+---
 
-### NIVEAU GRAPHIQUE 
-- => PaintComponent() & Repaint()
+### 2. **Controller Layer**
+#### `Jeu` — Game Manager (by Yuzhen & Yilun)
+Central orchestrator managing:
+- Game loop execution
+- Turn alternation
+- Input handling (scanner-based for CLI)
+- Rule enforcement (cannot eat from empty cells)
 
+> Winning condition: Player who **avoids** consuming the poisoned cell wins.  
+> Turn-based logic: `currentPlayer = turn % 2`
 
-## MAIN 
-- Appeler Jeu.Lancer() ?
+---
 
+## 🧪 Getting Started
 
-Swing -> Vue <- Modele
+### 🔧 Requirements
+- Java 8+
+- Make (optional, for build automation)
+
+### 🏁 Build & Run
+#### Manual:
+```bash
+javac Niveau.java Jeu.java
+java Jeu
