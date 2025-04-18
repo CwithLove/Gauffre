@@ -14,6 +14,8 @@ public class Niveau {
     public static final int VIDE = 0;
     public static final int GAUFFRE = 1;
     public static final int EMPOIS = 2;
+    private int lig;
+    private int col;
 
     // Constructeur
 
@@ -25,6 +27,8 @@ public class Niveau {
             }
         }
         this.tab[0][0] = EMPOIS;
+        this.lig = 4;
+        this.col = 5;
     }
     public Niveau(int lig, int col) {
         this.tab = new int[lig][col];
@@ -34,6 +38,8 @@ public class Niveau {
             }
         }
         this.tab[0][0] = EMPOIS;
+        this.lig = lig;
+        this.col = col;
     }
 
     // Redimensionne le tableau
@@ -50,6 +56,14 @@ public class Niveau {
     // Getter
     public int get(int lig, int col) {
         return this.tab[lig][col];
+    }
+
+    public int getLig() {
+        return this.lig;
+    }
+
+    public int getCol() {
+        return this.col;
     }
 
     // Setter
