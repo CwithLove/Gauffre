@@ -4,6 +4,8 @@ import java.awt.geom.Rectangle2D;
 
 class NiveauGraphique extends JComponent {
     private Niveau niveau;
+    int cellHeight;
+    int cellWidth;
 
 	public NiveauGraphique(Jeu jeu) {
         this.niveau = jeu.niveau();
@@ -22,8 +24,8 @@ class NiveauGraphique extends JComponent {
         int lignes = niveau.getLignes();
         int colonnes = niveau.getColonnes();
 
-        int cellWidth = width / colonnes;
-        int cellHeight = height / lignes;
+        cellWidth = width / colonnes;
+        cellHeight = height / lignes;
 
 		// On efface tout
 		drawable.clearRect(0, 0, width, height);
@@ -50,4 +52,12 @@ class NiveauGraphique extends JComponent {
             }
         }
 	}
+
+    int hauteurCase() {
+        return cellHeight;
+    }
+
+    int largeurCase() {
+        return cellWidth;
+    }
 }
