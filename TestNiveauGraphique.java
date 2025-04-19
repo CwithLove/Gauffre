@@ -7,9 +7,8 @@ public class TestNiveauGraphique {
         int dimx = 7;
         int dimy = 10;
         System.out.println("Création d'une gauffre de dimension " + dimx + " " + dimy + "...");
-        Niveau niveau = new Niveau(dimx, dimy);
-        niveau.set(5, 5, Niveau.VIDE);
-        NiveauGraphique niveauGraphique = new NiveauGraphique(niveau);
+        Jeu jeu = new Jeu();
+        NiveauGraphique niveauGraphique = new NiveauGraphique(jeu);
         JFrame frame = new JFrame("Niveau Graphique");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(niveauGraphique);

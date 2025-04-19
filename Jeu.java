@@ -19,6 +19,10 @@ class Jeu {
 		this.scanner = new Scanner(System.in);
 	}
 
+	public Niveau niveau() {
+		return niveau;
+	}
+
 	public boolean manger(int lig, int col) {
 		if (lig < 0 || lig >= this.niveau.getLignes() || col < 0 || col >= this.niveau.getColonnes()) {
 			System.out.println("Position invalide");

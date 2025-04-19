@@ -5,8 +5,8 @@ import java.awt.geom.Rectangle2D;
 class NiveauGraphique extends JComponent {
     private Niveau niveau;
 
-	public NiveauGraphique(Niveau niveau) {
-        this.niveau = niveau;
+	public NiveauGraphique(Jeu jeu) {
+        this.niveau = jeu.niveau();
     }
 
 	@Override
