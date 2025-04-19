@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 class NiveauGraphique extends JComponent {
     private Niveau niveau;
@@ -13,27 +14,40 @@ class NiveauGraphique extends JComponent {
 
 		Graphics2D drawable = (Graphics2D) g;
 
+        drawable.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
         int width = getSize().width;
 		int height = getSize().height;
 
-        int lignes = niveau.getLig();
-        int colonnes = niveau.getCol();
+        int lignes = niveau.getLignes();
+        int colonnes = niveau.getColonnes();
 
         int cellWidth = width / colonnes;
         int cellHeight = height / lignes;
 
 		// On efface tout
 		drawable.clearRect(0, 0, width, height);
-        drawable.drawRect(0, 0, width - 1, height - 1);
 
-        for (int i = 1; i < lignes; i++) {
-            int y = i * cellHeight;
-            drawable.drawLine(0, y, width, y);
-        }
-        
-        for (int j = 1; j < colonnes; j++) {
-            int x = j * cellWidth;
-            drawable.drawLine(x, 0, x, height);
+        Rectangle2D rectangle;
+
+        for (int i = 0; i < lignes; i++) {
+            for (int j = 0; j < colonnes; j++) {
+                if (niveau.get(i, j) == Niveau.GAUFFRE || niveau.get(i, j) == Niveau.EMPOIS) {
+                    rectangle = new Rectangle2D.Double(j*cellWidth, i*cellHeight, cellWidth, cellHeight);
+                    drawable.setColor(Color.ORANGE);
+                    drawable.fill(rectangle);
+                    drawable.setColor(Color.BLACK);
+                    drawable.draw(rectangle);
+                }
+                if (niveau.get(i, j) == Niveau.EMPOIS) {
+                    drawable.setColor(Color.GREEN);
+                    drawable.fillOval(j*cellWidth + cellWidth / 3, i*cellHeight + cellHeight / 3,
+                     cellWidth - (cellWidth / 3) * 2, cellHeight - (cellHeight / 3) * 2);
+                    drawable.setColor(Color.BLACK);
+                    drawable.drawOval(j*cellWidth + cellWidth / 3, i*cellHeight + cellHeight / 3,
+                     cellWidth - (cellWidth / 3) * 2, cellHeight - (cellHeight / 3) * 2);
+                }
+            }
         }
 	}
 }
