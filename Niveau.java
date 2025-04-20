@@ -1,13 +1,3 @@
-// ### NIVEAU -> Carte (Anthony, Mathis)
-// - Attributs: int[][] Tab; final int VIDE, GAUFFRE, EMPOIS.
-
-// - Methode Constructor(lig, col)
-// - Methode redimensionne(lig, col) => Appel Contructor(lig, col) 
-// - Methode getter(lig, col)
-// - Methode setter(lig, col, val) 
-// - Methode final() -> return tab[0][0] == VIDE
-// - Methode d'affichage() -> ( ' ' pour Vide, '#' pour Gauffre, '@' pour Empoisonne)
-
 public class Niveau {
     private static final int MAXLINE  = 99;
     private int[][] tab;

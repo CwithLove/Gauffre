@@ -5,12 +5,13 @@ public class IA {
         HARD,
         EXPERT
     }
-    
+
     public static AILevel lv;
     public Jeu jeu;
     public Niveau niveau;
-    
-    IA(String name) {
+
+    IA(Niveau n, String name) {
+        this.niveau = n;
         if (name.equals("easy")) {
             lv = AILevel.EASY;
         } else if (name.equals("medium")) {
@@ -24,40 +25,54 @@ public class IA {
         }
     }
 
-    public void run() {
+    public int[] run() {
         switch (lv) {
             case EASY:
-                System.out.println("Running EASY AI");
-                easy();
-                break;
+                return easy();
             case MEDIUM:
-                System.out.println("Running MEDIUM AI");
-                medium();
-                break;
+                return medium();
             case HARD:
-                System.out.println("Running HARD AI");
-                hard();
-                break;
+                return hard();
             case EXPERT:
-                System.out.println("Running EXPERT AI");
-                expert();
-                break;
+                return expert();
+        }
+        return new int[] { 0, 0 }; // Default case
+    }
+
+    private int[] easy() {
+        int lig;
+        int col;
+        // Version aléatoire (sans se succéder 0 0)
+        if (niveau.get(0,1) == Niveau.VIDE && niveau.get(1,0) != Niveau.VIDE) {
+            return new int[] { 1, 0 };
+        } else if (niveau.get(0,1) != Niveau.VIDE && niveau.get(1,0) == Niveau.VIDE) {
+            return new int[] { 0, 1 };
+        } else if (niveau.get(0, 1) == Niveau.VIDE && niveau.get(1, 0) == Niveau.VIDE) {
+            return new int[] { 0, 0 };
+        } else {
+            do {
+                lig = (int) (Math.random() * niveau.getLignes());
+                col = (int) (Math.random() * niveau.getColonnes());
+            }
+            while (niveau.get(lig, col) == Niveau.VIDE ||
+                   (lig == 0 && col == 0));
+
+            return new int[] { lig, col };
         }
     }
 
-    private void easy() {
-        // Easy AI logic
-    }
-
-    private void medium() {
+    private int[] medium() {
         // Medium AI logic
+        return new int[] { 0, 0 }; // Example move
     }
 
-    private void hard() {
+    private int[] hard() {
         // Hard AI logic
+        return new int[] { 0, 0 }; // Example move
     }
 
-    private void expert() {
+    private int[] expert() {
         // Expert AI logic
+        return new int[] { 0, 0 }; // Example move
     }
 }

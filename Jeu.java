@@ -1,12 +1,3 @@
-
-/*
- * @Author: ThearchyHelios work@thearchyhelios.com
- * @Date: 2025-04-18 15:42:12
- * @LastEditors: ThearchyHelios work@thearchyhelios.com
- * @LastEditTime: 2025-04-18 16:01:22
- * @FilePath: /Gauffre/Jeu.java
- * @Description: 
- */
 import java.util.Scanner;
 
 class Jeu {
@@ -71,6 +62,40 @@ class Jeu {
 	}
 
 	public void JvsIA(String IA) {
+		IA ia = new IA(this.niveau, IA);
+
+		int currentPlayer = (int) (Math.random() * 2); // Randomly choose who starts (0 or 1)
+
+		while (!this.verifyFinal()) {
+			System.out.println("\nNiveau actuel\n");
+			this.niveau.afficher();
+
+			if (currentPlayer == 0) {
+				System.out.println("Tour Joueur :");
+				System.out.print("Veuillez entrer la position a manger (ligne colonne): ");
+				try {
+					int lig = scanner.nextInt();
+					int col = scanner.nextInt();
+					boolean peuManger = manger(lig, col);
+					if (peuManger) {
+						currentPlayer = 1; // Switch to IA
+					}
+				} catch (Exception e) {
+					System.out.println("Entree invalide");
+					scanner.nextLine();
+				}
+			} else {
+				System.out.println("Tour IA :");
+				int[] coup = ia.run();
+				System.out.println("IA mange en position: " + coup[0] + " " + coup[1]);
+				manger(coup[0], coup[1]);
+				currentPlayer = 0; // Switch to Joueur
+			}
+		}
+
+		String winner = (currentPlayer == 0) ? "Joueur" : "IA";
+		System.out.println("\nGame over ! " + winner + " a gagne !");
+		scanner.close();
 
 	}
 
