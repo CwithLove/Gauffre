@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="74320f4c-e324-4c1b-b6ad-b577f7b66127" name="Changes" comment="Ajout d'un historique, utile pour l'IAboss" />
+    <list default="true" id="74320f4c-e324-4c1b-b6ad-b577f7b66127" name="Changes" comment="Ajout d'un historique, utile pour l'IAboss">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,21 +15,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Kevin272727"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Kevin272727&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/CwithLove/Gauffre.git",
-    "accountId": "d15e3be4-0a2b-47b0-b8eb-acf447f278d6"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/CwithLove/Gauffre.git&quot;,
+    &quot;accountId&quot;: &quot;d15e3be4-0a2b-47b0-b8eb-acf447f278d6&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2vze5AjrjstWcnPdkmrGGvpUUOI" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -37,6 +39,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/KEVIN/Documents/Kevin/Univ/L3/S6/PROG6/CookingSimulator/GIRAUD_DHENIN/src/Structures/Couple.java",
@@ -66,6 +69,7 @@
       <option name="presentableId" value="Default" />
       <updated>1745152144594</updated>
       <workItem from="1745152145944" duration="5874000" />
+      <workItem from="1745168386970" duration="371000" />
     </task>
     <task id="LOCAL-00001" summary="Ajout de l'IA facile, et modification mineure de fichiers">
       <option name="closed" value="true" />
@@ -83,7 +87,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745157987698</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Ajout d'un historique, utile pour l'IAboss">
+      <option name="closed" value="true" />
+      <created>1745168460861</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1745168460861</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
