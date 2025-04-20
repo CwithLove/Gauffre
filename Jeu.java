@@ -6,12 +6,13 @@
  * @FilePath: /Gauffre/Jeu.java
  * @Description: 
  */
-import java.util.Scanner;
+import java.util.*;
 
 class Jeu {
 	public Niveau niveau;
 	public int tour;
 	private Scanner scanner;
+	public ArrayList<Couple<Integer,Integer>> historique = new ArrayList<>();
 	private IARandom ia = new IARandom();
 
 	public Jeu() {
@@ -48,6 +49,7 @@ class Jeu {
 		System.out.println("Jeu commence");
 		while (!this.verifyFinal()) {
 			int currentPlayer = (this.tour % 2); // La personne (tour%2) gagne
+			Couple<Integer,Integer> coordonnes = null;
 			
 			System.out.println("\nNiveau actuel\n");
 			this.niveau.afficher();
@@ -60,19 +62,23 @@ class Jeu {
 					int col = scanner.nextInt();
 					boolean peuManger = manger(lig, col);
 					if (peuManger) {
+						coordonnes = new Couple<>(lig, col);
 						this.tour++;
 					}
 				}
 				else {
-					ia.IAcoup(this);
+					coordonnes = ia.IAcoup(this);
 				}
+
+				if (coordonnes != null)
+					this.historique.add(coordonnes);
 
 			} catch (Exception e) {
 				System.out.println("Entree invalide");
 				scanner.nextLine();
 			}
 		}
-		
+		System.out.println("Historique : " + this.historique);
 		int winner = (this.tour % 2);
 		System.out.println("\nGame over ! Joueur " + (winner+1) + " a gagne !");
 		scanner.close();
