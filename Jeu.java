@@ -1,3 +1,4 @@
+
 /*
  * @Author: ThearchyHelios work@thearchyhelios.com
  * @Date: 2025-04-18 15:42:12
@@ -24,12 +25,12 @@ class Jeu {
 			System.out.println("Position invalide");
 			return false;
 		}
-		
+
 		if (this.niveau.get(lig, col) == Niveau.VIDE) {
 			System.out.println("Cette position a été mangée, veuillez ressayer :)");
 			return false;
 		}
-		
+
 		for (int i = lig; i < this.niveau.getLignes(); i++) {
 			for (int j = col; j < this.niveau.getColonnes(); j++) {
 				this.niveau.set(i, j, Niveau.VIDE);
@@ -42,15 +43,14 @@ class Jeu {
 		return this.niveau.finalNiveau();
 	}
 
-	public void lancer() {
-		System.out.println("Jeu commance");
+	private void JvsJ() {
 		while (!this.verifyFinal()) {
 			int currentPlayer = (this.tour % 2); // La personne (tour%2) gagne
-			
+
 			System.out.println("\nNiveau actuel\n");
 			this.niveau.afficher();
 			System.out.println("Tour " + currentPlayer + " :");
-			
+
 			System.out.print("Veuillez entrer la position a manger (ligne colonne): ");
 			try {
 				int lig = scanner.nextInt();
@@ -64,12 +64,88 @@ class Jeu {
 				scanner.nextLine();
 			}
 		}
-		
+
 		int winner = (this.tour % 2);
 		System.out.println("\nGame over ! Joueur " + winner + " a gagne !");
 		scanner.close();
 	}
-	
+
+	public void JvsIA(String IA) {
+
+	}
+
+	public void IAvsIA(String IA1, String IA2) {
+
+	}
+
+	public void lancer() {
+		int nombreDeJoueurs = 2;
+
+		// Determiner le nombre de joueurs
+		// 0 = IA vs IA, 1 = Joueur vs IA, 2 = Joueur vs Joueur
+		try {
+			do {
+				System.out.print("Entree nombres de joueurs: ");
+				nombreDeJoueurs = scanner.nextInt();
+				if (nombreDeJoueurs > 2 || nombreDeJoueurs < 0) {
+					System.out.println("Entree invalide");
+					System.out.print("Entree nombres de joueurs: ");
+				}
+			} while (nombreDeJoueurs > 2 || nombreDeJoueurs < 0);
+		} catch (Exception e) {
+			System.out.println("Entree invalide");
+			scanner.nextLine();
+		}
+
+		if (nombreDeJoueurs == 0) {
+			String niveauIA1 = "easy";
+			String niveauIA2 = "easy";
+			try {
+				do {
+					System.out.print("Niveau IA 1 (easy, medium, hard, expert): ");
+					niveauIA1 = scanner.next();
+					if (!niveauIA1.matches("easy|medium|hard|expert")) {
+						System.out.println("Entree invalide");
+					}
+				} while (!niveauIA1.matches("easy|medium|hard|expert"));
+			} catch (Exception e) {
+				scanner.nextLine();
+			}
+
+			try {
+				do {
+					System.out.print("Niveau IA 2 (easy, medium, hard, expert): ");
+					niveauIA2 = scanner.next();
+					if (!niveauIA2.matches("easy|medium|hard|expert")) {
+						System.out.println("Entree invalide");
+					}
+				} while (!niveauIA2.matches("easy|medium|hard|expert"));
+			} catch (Exception e) {
+				scanner.nextLine();
+			}
+			this.IAvsIA(niveauIA1, niveauIA2);
+
+		} else if (nombreDeJoueurs == 1) {
+			String niveauIA = "easy";
+			try {
+				do {
+					System.out.print("Niveau IA (easy, medium, hard, expert): ");
+					niveauIA = scanner.next();
+					if (!niveauIA.matches("easy|medium|hard|expert")) {
+						System.out.println("Entree invalide");
+					}
+				} while (!niveauIA.matches("easy|medium|hard|expert"));
+			} catch (Exception e) {
+				scanner.nextLine();
+			}
+			this.JvsIA(niveauIA);
+
+		} else if (nombreDeJoueurs == 2) {
+			this.JvsJ();
+		}
+
+	}
+
 	public static void main(String[] args) {
 		Jeu jeu = new Jeu();
 		jeu.lancer();
