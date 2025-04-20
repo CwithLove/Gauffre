@@ -26,5 +26,12 @@ public class TestNiveau {
         niveau.afficher();
         System.out.println("Vérification de la fin du niveau...");
         System.out.println("Niveau terminé : " + niveau.finalNiveau());
+
+        Jeu jeu = new Jeu();
+        jeu.niveau = new Niveau(5, 6);
+        jeu.lancer();
+
+
+
     }
 }
