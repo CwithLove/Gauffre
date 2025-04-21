@@ -4,6 +4,7 @@ class Jeu {
 	private Niveau niveau;
 	private int tour;
 	private Scanner scanner;
+	IA ia;
 
 	public Jeu() {
 		this.niveau = new Niveau();
@@ -61,8 +62,8 @@ class Jeu {
 		scanner.close();
 	}
 
-	public void JvsIA(String IA) {
-		IA ia = new IA(this.niveau, IA);
+	public void JvsIA(String lv) {
+		ia = IA.setIA(this.niveau, lv);
 
 		int currentPlayer = (int) (Math.random() * 2); // Randomly choose who starts (0 or 1)
 

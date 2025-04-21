@@ -1,78 +1,95 @@
-public class IA {
-    static enum AILevel {
-        EASY,
-        MEDIUM,
-        HARD,
-        EXPERT
-    }
-
-    public static AILevel lv;
+public abstract class IA {
     public Jeu jeu;
     public Niveau niveau;
 
-    IA(Niveau n, String name) {
-        this.niveau = n;
-        if (name.equals("easy")) {
-            lv = AILevel.EASY;
-        } else if (name.equals("medium")) {
-            lv = AILevel.MEDIUM;
-        } else if (name.equals("hard")) {
-            lv = AILevel.HARD;
-        } else if (name.equals("expert")) {
-            lv = AILevel.EXPERT;
-        } else {
-            throw new IllegalArgumentException("Invalid AI level: " + name);
+    public static IA setIA(Niveau n, String name) {
+        IA ia = null;
+        switch (name) {
+            case "easy":
+                ia = new IAEasy(n);
+                break;
+            case "medium":
+                ia = new IAMedium(n);
+                break;
+            case "hard":
+                ia = new IAHard(n);
+                break;
+            case "expert":
+                ia = new IAExpert(n);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid AI level: " + name);
         }
+        return ia;
     }
 
-    public int[] run() {
-        switch (lv) {
-            case EASY:
-                return easy();
-            case MEDIUM:
-                return medium();
-            case HARD:
-                return hard();
-            case EXPERT:
-                return expert();
-        }
-        return new int[] { 0, 0 }; // Default case
+    int[] run() {
+        return null;
     }
 
-    private int[] easy() {
-        int lig;
-        int col;
-        // Version aléatoire (sans se succéder 0 0)
-        if (niveau.get(0,1) == Niveau.VIDE && niveau.get(1,0) != Niveau.VIDE) {
-            return new int[] { 1, 0 };
-        } else if (niveau.get(0,1) != Niveau.VIDE && niveau.get(1,0) == Niveau.VIDE) {
-            return new int[] { 0, 1 };
-        } else if (niveau.get(0, 1) == Niveau.VIDE && niveau.get(1, 0) == Niveau.VIDE) {
-            return new int[] { 0, 0 };
-        } else {
-            do {
-                lig = (int) (Math.random() * niveau.getLignes());
-                col = (int) (Math.random() * niveau.getColonnes());
-            }
-            while (niveau.get(lig, col) == Niveau.VIDE ||
-                   (lig == 0 && col == 0));
+    // private int[] medium() {
+        
+    //     return new int[] { 0, 0 }; // Example move
+    // }
 
-            return new int[] { lig, col };
-        }
-    }
+    // private int minimax(int depth, boolean IAturn) {
+    //     if (niveau.finalNiveau()) {
+    //         return IAturn ? -1 : 1;
+    //     }
 
-    private int[] medium() {
-        // Medium AI logic
-        return new int[] { 0, 0 }; // Example move
-    }
+    //     int bestScore = IAturn ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 
-    private int[] hard() {
-        // Hard AI logic
-        return new int[] { 0, 0 }; // Example move
-    }
 
-    private int[] expert() {
-        // Expert AI logic
-        return new int[] { 0, 0 }; // Example move
-    }
+
+    // }
+
+    // // --------------------------------
+    // private int[] hard() {
+    //     // Hard AI logic
+    //     return new int[] { 0, 0 }; // Example move
+    // }
+
+    // private int[] expert() {
+    //     // Expert AI logic
+    //     return new int[] { 0, 0 }; // Example move
+    // }
+
+    // // Les methodes utilitaires
+    // private int[][] cloneEtat() {
+    //     int[][] clone = new int[niveau.getLignes()][niveau.getColonnes()];
+    //     for (int i = 0; i < niveau.getLignes(); i++) {
+    //         for (int j = 0; j < niveau.getColonnes(); j++) {
+    //             clone[i][j] = niveau.get(i, j);
+    //         }
+    //     }
+    //     return clone;
+    // }
+
+    // private void restoreEtat(int[][] clone) {
+    //     for (int i = 0; i < niveau.getLignes(); i++) {
+    //         for (int j = 0; j < niveau.getColonnes(); j++) {
+    //             niveau.set(i, j, clone[i][j]);
+    //         }
+    //     }
+    // }
+
+    // private int getScore() {
+    //     int score = 0;
+    //     for (int i = 0; i < niveau.getLignes(); i++) {
+    //         for (int j = 0; j < niveau.getColonnes(); j++) {
+    //             if (niveau.get(i, j) == Niveau.GAUFFRE) {
+    //                 score++;
+    //             }
+    //         }
+    //     }
+    //     return score;
+    // }
+
+    // private void mangerVirtuel(int lig, int col) {
+    //     for (int i = lig; i < niveau.getLignes(); i++) {
+    //         for (int j = col; j < niveau.getColonnes(); j++) {
+    //             niveau.set(i, j, Niveau.VIDE);
+    //         }
+    //     }
+    // }
 }
