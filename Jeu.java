@@ -19,6 +19,10 @@ class Jeu {
 		this.scanner = new Scanner(System.in);
 	}
 
+	public Niveau niveau() {
+		return niveau;
+	}
+
 	public boolean manger(int lig, int col) {
 		if (lig < 0 || lig >= this.niveau.getLignes() || col < 0 || col >= this.niveau.getColonnes()) {
 			System.out.println("Position invalide");
@@ -43,7 +47,7 @@ class Jeu {
 	}
 
 	public void lancer() {
-		System.out.println("Jeu commance");
+		System.out.println("Jeu commence");
 		while (!this.verifyFinal()) {
 			int currentPlayer = (this.tour % 2); // La personne (tour%2) gagne
 			
@@ -68,6 +72,26 @@ class Jeu {
 		int winner = (this.tour % 2);
 		System.out.println("\nGame over ! Joueur " + winner + " a gagne !");
 		scanner.close();
+	}
+
+	void jouer(int x, int y) {		// Utilisé par l'Ecouteur de souris pour jouer
+		int currentPlayer = (this.tour % 2); // La personne (tour%2) gagne
+
+		System.out.println("Tour " + currentPlayer + " :");
+		
+		try {
+			boolean peuManger = manger(x, y);
+			if (peuManger) {
+				this.tour++;
+			}
+		} catch (Exception e) {
+			System.out.println("Entree invalide");
+		}
+
+		if (verifyFinal()) {
+			int winner = (this.tour % 2);
+			System.out.println("\nGame over ! Joueur " + winner + " a gagne !");
+		}
 	}
 	
 	public static void main(String[] args) {
