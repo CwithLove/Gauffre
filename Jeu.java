@@ -1,15 +1,18 @@
 import java.util.Scanner;
+import java.util.Random;
 
 class Jeu {
 	private Niveau niveau;
 	private int tour;
 	private Scanner scanner;
+	private Random rand;
 	IA ia;
 
 	public Jeu() {
 		this.niveau = new Niveau();
 		this.tour = 0;
 		this.scanner = new Scanner(System.in);
+		this.rand = new Random();
 	}
 
 	public boolean manger(int lig, int col) {
@@ -65,7 +68,7 @@ class Jeu {
 	public void JvsIA(String lv) {
 		ia = IA.setIA(this.niveau, lv);
 
-		int currentPlayer = (int) (Math.random() * 2); // Randomly choose who starts (0 or 1)
+		int currentPlayer = rand.nextInt(2);
 
 		while (!this.verifyFinal()) {
 			System.out.println("\nNiveau actuel\n");

@@ -21,7 +21,7 @@ public class Niveau {
         // Constructeur par défaut
         // Crée une gauffre de 3 lignes et 4 colonnes
         // avec la case (0,0) empoisonnée
-        this(11, 15);
+        this(3, 4);
     }
 
     // Redimensionne le tableau
