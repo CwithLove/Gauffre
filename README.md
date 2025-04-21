@@ -47,10 +47,11 @@ Central orchestrator managing:
 
 ### 🔧 Requirements
 - Java 8+
-- Make (optional, for build automation)
 
 ### 🏁 Build & Run
 #### Manual:
 ```bash
-javac Niveau.java Jeu.java
-java Jeu
+javac -cp . -d out *.java
+java -cp out Jeu
+```
+

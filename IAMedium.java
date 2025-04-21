@@ -1,5 +1,12 @@
 public class IAMedium extends IA {
-    private final int MAX_DEPTH = 6;
+    // Profondeur de recherche maximale
+    // La profondeur de recherche est limitée pour éviter 
+    // les temps de calcul trop longs
+
+    // Complexite de l'IA Medium:
+    // - O(b^d) avec b le nombre de coups possibles
+    // -        avec d la profondeur de recherche
+    private final int MAX_DEPTH = 4;
 
     public IAMedium(Niveau n) {
         this.niveau = n;
