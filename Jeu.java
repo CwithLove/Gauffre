@@ -1,11 +1,3 @@
-/*
- * @Author: ThearchyHelios work@thearchyhelios.com
- * @Date: 2025-04-21 15:55:15
- * @LastEditors: ThearchyHelios work@thearchyhelios.com
- * @LastEditTime: 2025-04-21 15:55:34
- * @FilePath: /Gauffre/Jeu.java
- * @Description: 
- */
 import java.util.Random;
 import java.util.Scanner;
 
@@ -21,10 +13,6 @@ class Jeu {
 		this.tour = 0;
 		this.scanner = new Scanner(System.in);
 		this.rand = new Random();
-	}
-
-	public Niveau niveau() {
-		return niveau;
 	}
 
 	public boolean manger(int lig, int col) {
@@ -185,6 +173,10 @@ class Jeu {
 			this.JvsJ();
 		}
 
+	}
+
+	public Niveau getNiveau() {
+		return niveau;
 	}
 
 	public static void main(String[] args) {

@@ -1,6 +1,6 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import javax.swing.*;
 
 class NiveauGraphique extends JComponent {
     private Niveau niveau;
@@ -8,7 +8,11 @@ class NiveauGraphique extends JComponent {
     int cellWidth;
 
 	public NiveauGraphique(Jeu jeu) {
-        this.niveau = jeu.niveau();
+        this.niveau = jeu.getNiveau();
+    }
+    
+    public void setJeu(Jeu jeu) {
+        this.niveau = jeu.getNiveau();
     }
 
 	@Override

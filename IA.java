@@ -1,3 +1,11 @@
+/*
+ * @Author: ThearchyHelios work@thearchyhelios.com
+ * @Date: 2025-04-21 15:55:15
+ * @LastEditors: ThearchyHelios work@thearchyhelios.com
+ * @LastEditTime: 2025-04-21 16:12:07
+ * @FilePath: /Gauffre/IA.java
+ * @Description: 
+ */
 public abstract class IA {
     public Jeu jeu;
     public Niveau niveau;
