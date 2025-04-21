@@ -9,7 +9,7 @@
 // - Methode d'affichage() -> ( ' ' pour Vide, '#' pour Gauffre, '@' pour Empoisonne)
 
 public class Niveau {
-    private static final int MAXLINE  = 256;
+    private static final int MAXLINE  = 128;
     private int[][] tab;
     public static final int VIDE = 0;
     public static final int GAUFFRE = 1;

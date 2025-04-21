@@ -17,7 +17,7 @@ public class InterfaceGraphique implements Runnable {
 		JFrame frame = new JFrame("Jeu de la gauffre");
 		NiveauGraphique niv = new NiveauGraphique(j);
 		niv.addMouseListener(new AdaptateurSouris(j, niv));
-		//frame.addKeyListener(new AdaptateurClavier(control));
+		frame.addKeyListener(new AdaptateurClavier(j, niv));
 
 		// Mise en place de l'interface
 		frame.add(niv);
