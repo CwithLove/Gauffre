@@ -1,11 +1,3 @@
-/*
- * @Author: ThearchyHelios work@thearchyhelios.com
- * @Date: 2025-04-21 15:51:57
- * @LastEditors: ThearchyHelios work@thearchyhelios.com
- * @LastEditTime: 2025-04-21 16:22:22
- * @FilePath: /Gauffre/InterfaceGraphique.java
- * @Description: 
- */
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
