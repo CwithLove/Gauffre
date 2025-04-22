@@ -15,7 +15,7 @@ public class AdaptateurSouris extends MouseAdapter{
 		int x = e.getY() / n.hauteurCase();
 		int y = e.getX() / n.largeurCase();
 		
-		j.jouer(x, y);
+		j.manger(x, y);
 
 		n.repaint();
 	}
