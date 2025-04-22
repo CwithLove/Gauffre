@@ -7,7 +7,10 @@ public abstract class IA {
 
     public static IA setIA(Niveau n, String name) {
         IA ia = null;
-        switch (name) {
+        // Si le niveau n'est pas specifie, on utilise le niveau medium
+        String level = (name != null) ? name : "medium";
+        
+        switch (level) {
             case "easy":
                 ia = new IAEasy(n);
                 break;
@@ -21,7 +24,8 @@ public abstract class IA {
                 ia = new IAExpert(n);
                 break;
             default:
-                throw new IllegalArgumentException("Invalid AI level: " + name);
+                ia = new IAMedium(n);
+                break;
         }
         return ia;
     }

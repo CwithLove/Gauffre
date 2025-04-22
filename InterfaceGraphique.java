@@ -1,3 +1,4 @@
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,48 +9,75 @@ import javax.swing.*;
 public class InterfaceGraphique implements Runnable {
 
     Jeu j;
-    private IA ia;
+    private IA ia1;
+    private IA ia2;
     private JButton iaButton;
     private JButton iaFirstMoveButton;
     private JLabel statusLabel;
-    private JComboBox<String> iaLevelChoice;
     private NiveauGraphique niv;
-    private boolean isPlayerTurn = true;
+    private boolean isPlayer1Turn = true;
+    private int gameMode;
+    private String iaLevel1;
+    private String iaLevel2;
+    private Timer aiTimer;
+    private JFrame frame;
 
-    public InterfaceGraphique(Jeu jeu) {
-        j = jeu;
+    public InterfaceGraphique(Jeu jeu, int gameMode, String iaLevel1, String iaLevel2) {
+        this.j = jeu;
+        this.gameMode = gameMode;
+        this.iaLevel1 = iaLevel1;
+        this.iaLevel2 = iaLevel2;
     }
 
-    public static void demarrer(Jeu j) {
-        InterfaceGraphique vue = new InterfaceGraphique(j);
+    public static void demarrer(Jeu j, int gameMode, String iaLevel1, String iaLevel2) {
+        InterfaceGraphique vue = new InterfaceGraphique(j, gameMode, iaLevel1, iaLevel2);
         SwingUtilities.invokeLater(vue);
     }
 
     private void updateStatus() {
         if (j.verifyFinal()) {
-            if (isPlayerTurn) {
-                statusLabel.setText("Partie terminee ! L'IA a perdu !");
-            } else {
-                statusLabel.setText("Partie terminee ! Vous avez perdu !");
+            String message;
+            if (gameMode == InterfaceConfiguration.MODE_PLAYER_VS_PLAYER) {
+                message = !isPlayer1Turn ? "Partie terminee ! Joueur 2 a gagné !" : "Partie terminee ! Joueur 1 a gagné !";
+            } else if (gameMode == InterfaceConfiguration.MODE_PLAYER_VS_AI) {
+                message = !isPlayer1Turn ? "Partie terminee ! L'IA a gagné !" : "Partie terminee ! Vous avez gagné !";
+            } else { // AI vs AI
+                message = !isPlayer1Turn ? "Partie terminee ! IA 2 a gagné !" : "Partie terminee ! IA 1 a gagné !";
             }
-            iaButton.setEnabled(false);
-            iaFirstMoveButton.setEnabled(false);
+
+            statusLabel.setText(message);
         } else {
-            statusLabel.setText(isPlayerTurn ? "A votre tour" : "Tour de l'IA");
+            String turnMessage;
+            if (gameMode == InterfaceConfiguration.MODE_PLAYER_VS_PLAYER) {
+                turnMessage = isPlayer1Turn ? "Tour du Joueur 1" : "Tour du Joueur 2";
+            } else if (gameMode == InterfaceConfiguration.MODE_PLAYER_VS_AI) {
+                turnMessage = isPlayer1Turn ? "A votre tour" : "Tour de l'IA";
+            } else { // AI vs AI
+                turnMessage = isPlayer1Turn ? "Tour de l'IA 1" : "Tour de l'IA 2";
+            }
+            statusLabel.setText(turnMessage);
         }
     }
 
-    private void makeAIMove() {
+    private void makeAIMove(boolean isIA1) {
         if (!j.verifyFinal()) {
-            String level = (String) iaLevelChoice.getSelectedItem();
-            ia = IA.setIA(j.getNiveau(), level);
-            
-            int[] coup = ia.run();
-            if (coup != null) {
+            IA currentIA = isIA1 ? ia1 : ia2;
+            if (currentIA == null) { // Premiere partie, on initialise l'IA
+                String level = isIA1 ? iaLevel1 : iaLevel2;
+                currentIA = IA.setIA(j.getNiveau(), level);
+                if (isIA1) {
+                    ia1 = currentIA;
+                } else {
+                    ia2 = currentIA;
+                }
+            }
+
+            int[] coup = currentIA.run();
+            if (coup != null) { // Si l'IA a trouve un coup valide
                 if (coup[0] == 0 && coup[1] == 0) {
                     Niveau niveau = j.getNiveau();
                     boolean foundAlternative = false;
-                    
+
                     for (int i = 0; i < niveau.getLignes() && !foundAlternative; i++) {
                         for (int j = 0; j < niveau.getColonnes() && !foundAlternative; j++) {
                             if ((i != 0 || j != 0) && niveau.get(i, j) != Niveau.VIDE) {
@@ -60,39 +88,87 @@ public class InterfaceGraphique implements Runnable {
                         }
                     }
                 }
-                
+
                 j.manger(coup[0], coup[1]);
-                isPlayerTurn = true;
+                isPlayer1Turn = !isPlayer1Turn;
                 updateStatus();
                 niv.repaint();
-                
+
                 if (j.verifyFinal()) {
                     updateStatus();
+                } else if (gameMode == InterfaceConfiguration.MODE_AI_VS_AI) {
+                    // Si c'est IA vs IA, programmer le prochain coup automatiquement
+                    aiTimer = new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            makeAIMove(!isIA1);
+                        }
+                    });
+                    aiTimer.setRepeats(false);
+                    aiTimer.start();
                 }
+            } else { // Si l'IA n'a pas trouve de coup valide
+                String message = "Aucun coup valide trouvé";
+                statusLabel.setText(message);
             }
         }
     }
 
+    private void restartGame() {
+        Niveau niveau = new Niveau(j.getNiveau().getLignes(), j.getNiveau().getColonnes());
+        j = new Jeu(niveau);
+        niv.setJeu(j);
+        isPlayer1Turn = true;
+        ia1 = null;
+        ia2 = null;
+        if (gameMode == InterfaceConfiguration.MODE_PLAYER_VS_AI || gameMode == InterfaceConfiguration.MODE_AI_VS_AI) {
+            iaButton.setEnabled(true);
+            iaFirstMoveButton.setEnabled(true);
+        }
+        updateStatus();
+        niv.repaint();
+    }
+
     public void run() {
-        JFrame frame = new JFrame("Jeu de la gauffre");
+        frame = new JFrame("Jeu de la gauffre");
         niv = new NiveauGraphique(j);
 
         niv.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (isPlayerTurn && !j.verifyFinal()) {
+                if (j.verifyFinal()) {
+                    return;
+                }
+
+                // Pour le mode joueur vs joueur ou joueur vs IA (quand c'est le tour du joueur)
+                if ((gameMode == InterfaceConfiguration.MODE_PLAYER_VS_PLAYER)
+                        || (gameMode == InterfaceConfiguration.MODE_PLAYER_VS_AI && isPlayer1Turn)) {
+
                     int x = e.getY() / niv.hauteurCase();
                     int y = e.getX() / niv.largeurCase();
 
                     boolean moveSuccessful = j.manger(x, y);
                     if (moveSuccessful) {
-                        isPlayerTurn = false;
+                        isPlayer1Turn = !isPlayer1Turn;
                         updateStatus();
-												iaFirstMoveButton.setEnabled(false);
+                        if (gameMode == InterfaceConfiguration.MODE_PLAYER_VS_AI) {
+                            iaFirstMoveButton.setEnabled(false);
+                        }
                         niv.repaint();
 
                         if (j.verifyFinal()) {
                             updateStatus();
+                        } else if (gameMode == InterfaceConfiguration.MODE_PLAYER_VS_AI && !isPlayer1Turn) {
+                            // Si c'est le tour de l'IA après le coup du joueur
+                            aiTimer = new Timer(500, new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    makeAIMove(false);
+                                    aiTimer.stop();
+                                }
+                            });
+                            aiTimer.setRepeats(false);
+                            aiTimer.start();
                         }
                     }
                 }
@@ -101,13 +177,6 @@ public class InterfaceGraphique implements Runnable {
 
         JPanel controlPanel = new JPanel();
         controlPanel.setLayout(new GridLayout(2, 3));
-
-        String[] iaLevels = {"easy", "medium", "hard", "expert"};
-        iaLevelChoice = new JComboBox<>(iaLevels);
-        JPanel levelPanel = new JPanel();
-        levelPanel.add(new JLabel("Niveau IA: "));
-        levelPanel.add(iaLevelChoice);
-        controlPanel.add(levelPanel);
 
         statusLabel = new JLabel("Partie en cours");
         JPanel statusPanel = new JPanel();
@@ -118,50 +187,75 @@ public class InterfaceGraphique implements Runnable {
         restartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-							// reinitialiser le jeu
-                j = new Jeu();
-                niv.setJeu(j);
-                isPlayerTurn = true;
-                ia = null;
-                updateStatus();
-								iaButton.setEnabled(true);
-                iaFirstMoveButton.setEnabled(true);
-                niv.repaint();
-                
+                restartGame();
             }
         });
 
-				// add blank space
-				controlPanel.add(new JLabel(""));
+        JButton configButton = new JButton("Configuration");
+        configButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        new InterfaceConfiguration().show();
+                        frame.dispose();
+                    }
+                });
+            }
+        });
 
+        controlPanel.add(configButton);
         controlPanel.add(restartButton);
 
-        iaButton = new JButton("Tour de l'IA");
-        iaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!isPlayerTurn && !j.verifyFinal()) {
-                    makeAIMove();
-                } else {
-                    statusLabel.setText("C'est votre tour, cliquez sur le plateau");
+        if (gameMode == InterfaceConfiguration.MODE_PLAYER_VS_AI || gameMode == InterfaceConfiguration.MODE_AI_VS_AI) {
+            iaButton = new JButton("Tour de l'IA");
+            iaButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (gameMode == InterfaceConfiguration.MODE_PLAYER_VS_AI && !isPlayer1Turn && !j.verifyFinal()) {
+                        makeAIMove(false);
+                    } else if (gameMode == InterfaceConfiguration.MODE_AI_VS_AI && !j.verifyFinal()) {
+                        makeAIMove(isPlayer1Turn);
+                    } else {
+                        String message = "Ce n'est pas le tour de l'IA";
+                        statusLabel.setText(message);
+                    }
                 }
-            }
-        });
-        controlPanel.add(iaButton);
+            });
 
-        iaFirstMoveButton = new JButton("IA commence");
-        iaFirstMoveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (isPlayerTurn) {
-                    isPlayerTurn = false;
-                    updateStatus();
-                    makeAIMove();
-										iaFirstMoveButton.setEnabled(false);
-                }
+            // Adapter le libellé du bouton selon le mode
+            if (gameMode == InterfaceConfiguration.MODE_AI_VS_AI) {
+                iaButton.setText("Coup IA");
             }
-        });
-        controlPanel.add(iaFirstMoveButton);
+
+            controlPanel.add(iaButton);
+
+            iaFirstMoveButton = new JButton("IA commence");
+            iaFirstMoveButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (gameMode == InterfaceConfiguration.MODE_PLAYER_VS_AI && isPlayer1Turn) {
+                        isPlayer1Turn = false;
+                        updateStatus();
+                        makeAIMove(false);
+                        iaFirstMoveButton.setEnabled(false);
+                    } else if (gameMode == InterfaceConfiguration.MODE_AI_VS_AI) {
+                        // Démarrer la partie IA vs IA
+                        iaFirstMoveButton.setEnabled(false);
+                        makeAIMove(true);
+                    }
+                }
+            });
+
+            // Adapter le libellé du bouton selon le mode
+            if (gameMode == InterfaceConfiguration.MODE_AI_VS_AI) {
+                iaFirstMoveButton.setText("Démarrer IA vs IA");
+            }
+
+            controlPanel.add(iaFirstMoveButton);
+
+        }
 
         frame.setLayout(new BorderLayout());
         frame.add(niv, BorderLayout.CENTER);
