@@ -6,7 +6,7 @@ class Jeu {
 	private int tour;
 	private Scanner scanner;
 	private Random rand;
-	IA ia;
+	IA ia, ia2;
 
 	public Jeu() {
 		this.niveau = new Niveau();
@@ -62,7 +62,6 @@ class Jeu {
 
 		int winner = (this.tour % 2);
 		System.out.println("\nGame over ! Joueur " + winner + " a gagne !");
-		scanner.close();
 	}
 
 	public void JvsIA(String lv) {
@@ -99,11 +98,34 @@ class Jeu {
 
 		String winner = (currentPlayer == 0) ? "Joueur" : "IA";
 		System.out.println("\nGame over ! " + winner + " a gagne !");
-		scanner.close();
-
 	}
 
 	public void IAvsIA(String IA1, String IA2) {
+		ia = IA.setIA(this.niveau, IA1);
+		ia2 = IA.setIA(this.niveau, IA2);
+		int currentPlayer = rand.nextInt(2);
+
+		while (!this.verifyFinal()) {
+			System.out.println("\nNiveau actuel\n");
+			this.niveau.afficher();
+
+			if (currentPlayer == 0) {
+				System.out.println("Tour IA 1 :");
+				int[] coup = ia.run();
+				System.out.println("IA 1 mange en position: " + coup[0] + " " + coup[1]);
+				manger(coup[0], coup[1]);
+				currentPlayer = 1; // Switch to IA2
+			} else {
+				System.out.println("Tour IA 2 :");
+				int[] coup = ia2.run();
+				System.out.println("IA 2 mange en position: " + coup[0] + " " + coup[1]);
+				manger(coup[0], coup[1]);
+				currentPlayer = 0; // Switch to IA1
+			}
+		}
+
+		String winner = (currentPlayer == 0) ? "IA 1" : "IA 2";
+		System.out.println("\nGame over ! " + winner + " a gagne !");
 
 	}
 
@@ -172,7 +194,7 @@ class Jeu {
 		} else if (nombreDeJoueurs == 2) {
 			this.JvsJ();
 		}
-
+		scanner.close();
 	}
 
 	public Niveau getNiveau() {
