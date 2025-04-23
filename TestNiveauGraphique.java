@@ -1,4 +1,6 @@
 import javax.swing.*;
+import Modele.*;
+import Vue.NiveauGraphique;
 
 public class TestNiveauGraphique {
 

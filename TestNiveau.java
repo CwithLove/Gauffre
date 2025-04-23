@@ -1,3 +1,4 @@
+import Modele.*;
 public class TestNiveau {
     public static void main(String[] args){
         // Test de la classe Niveau

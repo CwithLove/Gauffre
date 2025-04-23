@@ -1,4 +1,5 @@
 import javax.swing.SwingUtilities;
+import Vue.InterfaceConfiguration;
 
 public class TestInterfaceGraphique {
     public static void main(String[] args) {
