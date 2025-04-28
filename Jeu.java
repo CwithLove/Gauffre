@@ -6,12 +6,14 @@
  * @FilePath: /Gauffre/Jeu.java
  * @Description: 
  */
-import java.util.Scanner;
+import java.util.*;
 
 class Jeu {
-	private Niveau niveau;
-	private int tour;
+	public Niveau niveau;
+	public int tour;
 	private Scanner scanner;
+	public ArrayList<Couple<Integer,Integer>> historique = new ArrayList<>();
+	private IARandom ia = new IARandom();
 
 	public Jeu() {
 		this.niveau = new Niveau();
@@ -30,7 +32,8 @@ class Jeu {
 		}
 		
 		if (this.niveau.get(lig, col) == Niveau.VIDE) {
-			System.out.println("Cette position a été mangée, veuillez ressayer :)");
+			if((this.tour%2) == 0)
+				System.out.println("Cette position a été mangée, veuillez ressayer :)");
 			return false;
 		}
 		
@@ -50,27 +53,38 @@ class Jeu {
 		System.out.println("Jeu commence");
 		while (!this.verifyFinal()) {
 			int currentPlayer = (this.tour % 2); // La personne (tour%2) gagne
+			Couple<Integer,Integer> coordonnes = null;
 			
 			System.out.println("\nNiveau actuel\n");
 			this.niveau.afficher();
-			System.out.println("Tour " + currentPlayer + " :");
-			
-			System.out.print("Veuillez entrer la position a manger (ligne colonne): ");
+			System.out.println("Joueur n° " + (currentPlayer+1) + " :");
+
 			try {
-				int lig = scanner.nextInt();
-				int col = scanner.nextInt();
-				boolean peuManger = manger(lig, col);
-				if (peuManger) {
-					this.tour++;
+				if (currentPlayer == 0){
+					System.out.print("Veuillez entrer la position a manger (ligne colonne): ");
+					int lig = scanner.nextInt();
+					int col = scanner.nextInt();
+					boolean peuManger = manger(lig, col);
+					if (peuManger) {
+						coordonnes = new Couple<>(lig, col);
+						this.tour++;
+					}
 				}
+				else {
+					coordonnes = ia.IAcoup(this);
+				}
+
+				if (coordonnes != null)
+					this.historique.add(coordonnes);
+
 			} catch (Exception e) {
 				System.out.println("Entree invalide");
 				scanner.nextLine();
 			}
 		}
-		
+		System.out.println("Historique : " + this.historique);
 		int winner = (this.tour % 2);
-		System.out.println("\nGame over ! Joueur " + winner + " a gagne !");
+		System.out.println("\nGame over ! Joueur " + (winner+1) + " a gagne !");
 		scanner.close();
 	}
 
